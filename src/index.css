@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@layer base{
+  body{
+    font-family: "Poppins", sans-serif;
+  }
+  section {
+    scroll-margin-top: 110px; /* tinggi navbar kamu */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+}
