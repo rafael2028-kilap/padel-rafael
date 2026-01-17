@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const sections = ["beranda", "tentang", "reservasi", "kontak"];
 
-const Navbar = () => {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("beranda");
 
@@ -27,49 +27,53 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-blue-900/70">
-      <div className="container mx-auto px-6 py-6 flex items-center justify-between">
+    <>
+      {/* NAVBAR */}
+      <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-blue-900/70">
+        <div className="container mx-auto px-6 py-5 flex items-center justify-between">
 
-        {/* LOGO */}
-        <h1 className="text-4xl font-bold text-white">
-          Padel Rafael
-        </h1>
+          {/* LOGO */}
+          <h1 className="text-2xl md:text-3xl font-bold text-white">
+            Padel <span className="text-cyan-300">Rafael</span>
+          </h1>
 
-        {/* DESKTOP MENU */}
-        <ul className="hidden md:flex items-center gap-10 text-white text-lg">
-          {sections.map((item) => (
-            <li key={item} className="relative">
-              <a
-                href={`#${item}`}
-                className="capitalize hover:text-cyan-300 transition"
-              >
-                {item}
-              </a>
-              <span
-                className={`absolute -bottom-1 left-0 h-0.5 bg-cyan-300 transition-all duration-300 ${
-                  active === item ? "w-full" : "w-0"
-                }`}
-              />
-            </li>
-          ))}
-        </ul>
+          {/* DESKTOP MENU */}
+          <ul className="hidden md:flex items-center gap-10 text-white text-lg">
+            {sections.map((item) => (
+              <li key={item} className="relative">
+                <a
+                  href={`#${item}`}
+                  className="capitalize hover:text-cyan-300 transition"
+                >
+                  {item}
+                </a>
+                <span
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-cyan-300 transition-all duration-300 ${
+                    active === item ? "w-full" : "w-0"
+                  }`}
+                />
+              </li>
+            ))}
+          </ul>
 
-        {/* MOBILE BUTTON */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-white text-3xl"
-        >
-          ☰
-        </button>
-      </div>
+          {/* MOBILE BUTTON */}
+          <button
+            onClick={() => setOpen(true)}
+            className="md:hidden text-white text-3xl"
+          >
+            ☰
+          </button>
+        </div>
+      </header>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU OVERLAY */}
       <div
-        className={`md:hidden fixed inset-0 bg-slate-900/90 backdrop-blur-xl
-        transition-all duration-300 z-40
-        ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 z-999 bg-slate-900/95 backdrop-blur-xl
+        transition-all duration-300
+        ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-10 text-white text-2xl">
+        <div className="flex flex-col items-center justify-center h-screen gap-10 text-white text-2xl">
+
           {sections.map((item) => (
             <a
               key={item}
@@ -85,14 +89,12 @@ const Navbar = () => {
 
           <button
             onClick={() => setOpen(false)}
-            className="mt-10 text-sm text-white/50 hover:text-white"
+            className="mt-10 text-base text-white/60 hover:text-white"
           >
             Tutup
           </button>
         </div>
       </div>
-    </header>
+    </>
   );
-};
-
-export default Navbar;
+}
