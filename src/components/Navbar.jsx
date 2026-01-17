@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const sections = ["beranda", "tentang", "reservasi", "kontak"];
 
-export default function Navbar() {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("beranda");
 
@@ -15,9 +15,7 @@ export default function Navbar() {
           }
         });
       },
-      {
-        threshold: 0.55,
-      }
+      { threshold: 0.6 }
     );
 
     sections.forEach((id) => {
@@ -29,16 +27,16 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-blue-950/70 backdrop-blur-xl border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+    <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-blue-900/70">
+      <div className="container mx-auto px-6 py-6 flex items-center justify-between">
 
         {/* LOGO */}
-        <h1 className="text-2xl md:text-3xl font-bold text-white">
-          Padel <span className="text-cyan-300">Rafael</span>
+        <h1 className="text-4xl font-bold text-white">
+          Padel Rafael
         </h1>
 
-        {/* DESKTOP */}
-        <ul className="hidden md:flex items-center gap-10 text-white">
+        {/* DESKTOP MENU */}
+        <ul className="hidden md:flex items-center gap-10 text-white text-lg">
           {sections.map((item) => (
             <li key={item} className="relative">
               <a
@@ -47,7 +45,6 @@ export default function Navbar() {
               >
                 {item}
               </a>
-
               <span
                 className={`absolute -bottom-1 left-0 h-0.5 bg-cyan-300 transition-all duration-300 ${
                   active === item ? "w-full" : "w-0"
@@ -59,7 +56,7 @@ export default function Navbar() {
 
         {/* MOBILE BUTTON */}
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen(!open)}
           className="md:hidden text-white text-3xl"
         >
           ☰
@@ -68,12 +65,11 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl
-        transition-all duration-300
-        ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`md:hidden fixed inset-0 bg-slate-900/90 backdrop-blur-xl
+        transition-all duration-300 z-40
+        ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       >
         <div className="flex flex-col items-center justify-center h-full gap-10 text-white text-2xl">
-
           {sections.map((item) => (
             <a
               key={item}
@@ -89,7 +85,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen(false)}
-            className="mt-10 text-sm text-white/60 hover:text-white"
+            className="mt-10 text-sm text-white/50 hover:text-white"
           >
             Tutup
           </button>
@@ -97,4 +93,6 @@ export default function Navbar() {
       </div>
     </header>
   );
-}
+};
+
+export default Navbar;
