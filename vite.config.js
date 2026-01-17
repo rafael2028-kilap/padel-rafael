@@ -3,9 +3,9 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  base: "/padel-rafael/", // ⚠️ HARUS sama persis dengan nama repository
   plugins: [
     react(),
-    tailwindcss() 
+    tailwindcss(),
   ],
-    base: "/padel-rafael/", //
 });
