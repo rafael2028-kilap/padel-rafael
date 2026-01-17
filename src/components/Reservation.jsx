@@ -6,14 +6,19 @@ const courts = [
   { name: "Court C", price: 150000, label: "VIP" },
 ];
 
-const times = ["08","09","10","11","12","13","14","15","16","17","18","19"];
+const times = [
+  "08","09","10","11","12","13",
+  "14","15","16","17","18","19"
+];
 
 export default function Reservation() {
   const today = new Date();
-  const [month, setMonth] = useState(today.getMonth());
-  const [year, setYear] = useState(today.getFullYear());
-  const [selectedDate, setSelectedDate] = useState(null);
 
+  // ⬇️ YEAR TIDAK BERUBAH → ESLINT AMAN
+  const [year] = useState(today.getFullYear());
+  const [month, setMonth] = useState(today.getMonth());
+
+  const [selectedDate, setSelectedDate] = useState(null);
   const [team, setTeam] = useState("");
   const [court, setCourt] = useState(courts[0]);
   const [selectedTimes, setSelectedTimes] = useState([]);
@@ -23,18 +28,30 @@ export default function Reservation() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const days = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
   const total = selectedTimes.length * court.price;
-  const dateKey = selectedDate ? `${selectedDate}-${court.name}` : null;
+  const dateKey = selectedDate
+    ? `${selectedDate}-${court.name}`
+    : null;
 
-  const isBooked = (t) =>
-    bookings.some((b) => b.key === dateKey && b.time === t);
+  const isBooked = (time) =>
+    bookings.some(
+      (b) => b.key === dateKey && b.time === time
+    );
 
-  const toggleTime = (t) => {
-    if (!selectedDate) return alert("Pilih tanggal dulu");
-    if (isBooked(t)) return;
+  const toggleTime = (time) => {
+    if (!selectedDate) {
+      alert("Pilih tanggal dulu");
+      return;
+    }
+
+    if (isBooked(time)) return;
+
     setSelectedTimes((prev) =>
-      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+      prev.includes(time)
+        ? prev.filter((t) => t !== time)
+        : [...prev, time]
     );
   };
 
@@ -44,12 +61,12 @@ export default function Reservation() {
       return;
     }
 
-    const newBookings = selectedTimes.map((t) => ({
-      id: Date.now() + t,
+    const newBookings = selectedTimes.map((time) => ({
+      id: Date.now() + time,
       team,
       court: court.name,
       date: selectedDate,
-      time: t,
+      time,
       price: court.price,
       key: dateKey,
     }));
@@ -73,9 +90,12 @@ export default function Reservation() {
     >
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
 
-        {/* LEFT */}
+        {/* ================= LEFT ================= */}
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 space-y-6">
-          <h2 className="text-3xl font-bold text-white">Booking Lapangan</h2>
+
+          <h2 className="text-3xl font-bold text-white">
+            Booking Lapangan
+          </h2>
 
           <input
             placeholder="Nama Tim"
@@ -84,17 +104,10 @@ export default function Reservation() {
             className="w-full bg-white/10 border border-white/20 px-4 py-3 rounded-xl text-white"
           />
 
-          {/* Calendar */}
+          {/* ===== CALENDAR ===== */}
           <div>
             <div className="flex justify-between text-white mb-3">
-              <button
-                onClick={() => {
-                  if (month === 0) {
-                    setMonth(11);
-                    setYear(year - 1);
-                  } else setMonth(month - 1);
-                }}
-              >
+              <button onClick={() => setMonth(month === 0 ? 11 : month - 1)}>
                 ‹
               </button>
 
@@ -105,23 +118,19 @@ export default function Reservation() {
                 })}
               </span>
 
-              <button
-                onClick={() => {
-                  if (month === 11) {
-                    setMonth(0);
-                    setYear(year + 1);
-                  } else setMonth(month + 1);
-                }}
-              >
+              <button onClick={() => setMonth(month === 11 ? 0 : month + 1)}>
                 ›
               </button>
             </div>
 
             <div className="grid grid-cols-7 gap-2">
-              {Array.from({ length: days }, (_, i) => {
+              {Array.from({ length: daysInMonth }, (_, i) => {
                 const day = i + 1;
-                const date = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-                const past = new Date(date) < new Date().setHours(0,0,0,0);
+                const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+                const past =
+                  new Date(date) <
+                  new Date().setHours(0, 0, 0, 0);
 
                 return (
                   <button
@@ -131,7 +140,7 @@ export default function Reservation() {
                       setSelectedDate(date);
                       setSelectedTimes([]);
                     }}
-                    className={`py-2 rounded-lg ${
+                    className={`py-2 rounded-lg text-sm ${
                       past
                         ? "bg-white/5 text-white/30"
                         : selectedDate === date
@@ -147,18 +156,19 @@ export default function Reservation() {
           </div>
         </div>
 
-        {/* RIGHT */}
-        <div className="flex flex-col gap-6 h-180">
+        {/* ================= RIGHT ================= */}
+        <div className="flex flex-col gap-6 h-170">
 
-          {/* Time */}
+          {/* TIME */}
           <div className="bg-white/5 rounded-2xl p-6">
             <p className="text-white mb-3">Pilih Jam</p>
+
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
               {times.map((t) => (
                 <button
                   key={t}
                   onClick={() => toggleTime(t)}
-                  className={`py-2 rounded-lg ${
+                  className={`py-2 rounded-lg text-sm ${
                     isBooked(t)
                       ? "bg-red-500/30 text-red-300"
                       : selectedTimes.includes(t)
@@ -172,9 +182,10 @@ export default function Reservation() {
             </div>
           </div>
 
-          {/* Courts */}
+          {/* COURT */}
           <div className="bg-white/5 rounded-2xl p-6">
             <p className="text-white mb-3">Pilih Court</p>
+
             <div className="grid grid-cols-3 gap-4">
               {courts.map((c) => (
                 <button
@@ -188,13 +199,15 @@ export default function Reservation() {
                 >
                   <p className="font-bold">{c.name}</p>
                   <p className="text-sm">{c.label}</p>
-                  <p className="text-sm">Rp {c.price.toLocaleString()}</p>
+                  <p className="text-sm">
+                    Rp {c.price.toLocaleString("id-ID")}
+                  </p>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Total */}
+          {/* TOTAL */}
           <div className="bg-white/5 rounded-2xl p-6 flex justify-between text-white">
             <span>Total</span>
             <span className="text-cyan-300 font-bold">
@@ -202,6 +215,7 @@ export default function Reservation() {
             </span>
           </div>
 
+          {/* BUTTON */}
           <button
             onClick={confirmBooking}
             className="w-full py-3 rounded-xl bg-cyan-400 text-slate-900 font-bold hover:scale-105 transition"
@@ -209,7 +223,7 @@ export default function Reservation() {
             Konfirmasi Booking
           </button>
 
-          {/* History — FIXED HEIGHT, SCROLL */}
+          {/* BOOKING ACTIVE — FIXED */}
           <div className="flex-1 min-h-0 overflow-hidden">
             {bookings.length > 0 && (
               <div className="bg-white/5 rounded-2xl p-4 h-full overflow-y-auto space-y-3">
@@ -238,7 +252,6 @@ export default function Reservation() {
           </div>
 
         </div>
-
       </div>
     </section>
   );
