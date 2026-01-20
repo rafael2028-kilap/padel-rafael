@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import DataImage from "./data";
 import { listProyek } from "./data";
+import Admin from "./components/Admin";
 import ContactSection from "./components/ContactSection";
 import Reservation from "./components/Reservation";
 import Footer from "./components/Footer";
@@ -160,6 +161,10 @@ function App() {
 
       {/* ================= FOOTER ================= */}
       <Footer />
+      <section id="admin" className="mt-32">
+        <Admin />
+      </section>
+
     </>
   );
 }
