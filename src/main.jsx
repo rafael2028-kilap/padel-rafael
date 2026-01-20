@@ -1,14 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import Navbar from './components/Navbar.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
-createRoot(document.getElementById('root')).render(
+import "./index.css";
+import App from "./App.jsx";
+import Navbar from "./components/Navbar.jsx";
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <div className="container mx-auto px-12">
-      <Navbar/>
+    <BrowserRouter basename="/padel-rafael">
+      <Navbar />
       <App />
-    </div>
-  </StrictMode> 
+    </BrowserRouter>
+  </StrictMode>
 );
