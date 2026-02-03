@@ -6,30 +6,44 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("beranda");
 
-  // ===== LOCK SCROLL SAAT MENU BUKA =====
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+  // ======================
+  // SCROLL TO SECTION
+  // ======================
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-    return () => {
-      document.body.style.overflow = "auto";
-    };
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+
+    setOpen(false);
+  };
+
+  // ======================
+  // LOCK SCROLL (MOBILE)
+  // ======================
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "auto";
+    return () => (document.body.style.overflow = "auto");
   }, [open]);
 
-  // ===== ACTIVE SECTION =====
+  // ======================
+  // ACTIVE MENU OBSERVER
+  // ======================
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setActive(e.target.id);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
           }
         });
       },
-      { threshold: 0.6 }
+      {
+        threshold: 0.6,
+      }
     );
 
     sections.forEach((id) => {
@@ -43,7 +57,7 @@ export default function Navbar() {
   return (
     <>
       {/* ================= HEADER ================= */}
-      <header className="fixed top-0 left-0 w-full z-100 backdrop-blur-xl bg-blue-900/80">
+      <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-blue-900/80">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
 
           {/* LOGO */}
@@ -55,13 +69,14 @@ export default function Navbar() {
           <ul className="hidden md:flex items-center gap-10 text-white">
             {sections.map((item) => (
               <li key={item} className="relative">
-                <a
-                  href={`#${item}`}
+                <button
+                  onClick={() => scrollToSection(item)}
                   className="capitalize hover:text-cyan-300 transition"
                 >
                   {item}
-                </a>
+                </button>
 
+                {/* ACTIVE LINE */}
                 <span
                   className={`absolute -bottom-1 left-0 h-0.5 bg-cyan-300 transition-all duration-300 ${
                     active === item ? "w-full" : "w-0"
@@ -71,7 +86,7 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* HAMBURGER */}
+          {/* MOBILE BUTTON */}
           <button
             onClick={() => setOpen(true)}
             className="md:hidden text-white text-3xl"
@@ -86,21 +101,20 @@ export default function Navbar() {
         <div className="fixed inset-0 z-9999 bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center gap-10 text-white text-2xl">
 
           {sections.map((item) => (
-            <a
+            <button
               key={item}
-              href={`#${item}`}
-              onClick={() => setOpen(false)}
+              onClick={() => scrollToSection(item)}
               className={`capitalize transition ${
                 active === item ? "text-cyan-300" : "text-white"
               }`}
             >
               {item}
-            </a>
+            </button>
           ))}
 
           <button
             onClick={() => setOpen(false)}
-            className="mt-10 px-6 py-2 border border-white/30 rounded-full text-sm hover:bg-white/10"
+            className="mt-10 px-8 py-2 border border-white/30 rounded-full text-sm hover:bg-white/10 transition"
           >
             Tutup
           </button>

@@ -1,6 +1,15 @@
-import { FaInstagram, FaTwitter, FaWhatsapp, FaEnvelope } from "react-icons/fa";
-
 export default function Footer() {
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <footer className="mt-32 text-white">
 
@@ -19,41 +28,11 @@ export default function Footer() {
               dan dirancang untuk pengalaman bermain yang lebih menyenangkan.
             </p>
 
-            {/* SOCIAL */}
             <div className="flex justify-center md:justify-start gap-6 mt-6 text-white/70">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-cyan-300 transition"
-              >
-                Instagram
-              </a>
-
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-cyan-300 transition"
-              >
-                Twitter
-              </a>
-
-              <a
-                href="https://wa.me/628xxxxxxxxx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-cyan-300 transition"
-              >
-                WhatsApp
-              </a>
-
-              <a
-                href="mailto:rafaelramosvalen21@gmail.com"
-                className="hover:text-cyan-300 transition"
-              >
-                Email
-              </a>
+              <span className="hover:text-cyan-300 transition cursor-pointer">Instagram</span>
+              <span className="hover:text-cyan-300 transition cursor-pointer">Twitter</span>
+              <span className="hover:text-cyan-300 transition cursor-pointer">WhatsApp</span>
+              <span className="hover:text-cyan-300 transition cursor-pointer">Email</span>
             </div>
           </div>
 
@@ -62,29 +41,43 @@ export default function Footer() {
             <h3 className="font-semibold mb-5 text-lg">Menu</h3>
 
             <ul className="space-y-3 text-slate-300">
+
               <li>
-                <a href="#beranda" className="hover:text-cyan-300 transition">
+                <button
+                  onClick={() => scrollTo("beranda")}
+                  className="hover:text-cyan-300 transition"
+                >
                   Beranda
-                </a>
+                </button>
               </li>
 
               <li>
-                <a href="#tentang" className="hover:text-cyan-300 transition">
+                <button
+                  onClick={() => scrollTo("tentang")}
+                  className="hover:text-cyan-300 transition"
+                >
                   Tentang
-                </a>
+                </button>
               </li>
 
               <li>
-                <a href="#reservasi" className="hover:text-cyan-300 transition">
+                <button
+                  onClick={() => scrollTo("reservasi")}
+                  className="hover:text-cyan-300 transition"
+                >
                   Reservasi
-                </a>
+                </button>
               </li>
 
               <li>
-                <a href="#kontak" className="hover:text-cyan-300 transition">
+                <button
+                  onClick={() => scrollTo("kontak")}
+                  className="hover:text-cyan-300 transition"
+                >
                   Kontak
-                </a>
+                </button>
               </li>
+
             </ul>
           </div>
 
@@ -94,18 +87,15 @@ export default function Footer() {
 
             <div className="space-y-3 text-slate-300">
               <p>📍 Jakarta, Indonesia</p>
-
               <p className="break-all md:break-normal">
                 📧 rafaelramosvalen21@gmail.com
               </p>
-
-              <p>⏰ 08:00 – 22:00</p>
+              <p>⏰ 08:00 – 19:00</p>
             </div>
           </div>
 
         </div>
 
-        {/* DIVIDER */}
         <div className="mt-16 border-t border-white/10 pt-6 text-center text-white/40 text-sm">
           © 2026 Padel Rafael. All rights reserved.
         </div>
