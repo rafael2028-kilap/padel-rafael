@@ -30,47 +30,53 @@ const menu = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ mobile = false, onClose }) {
   function handleLogout() {
-    // clear semua data frontend
     localStorage.clear();
-
-    // redirect ke landing page GitHub Pages
     window.location.href =
       "https://rafael2028-kilap.github.io/padel-rafael/";
   }
 
   return (
-    <aside className="w-64 min-h-screen bg-slate-900 text-white p-6 hidden md:flex flex-col">
-      
-      {/* Logo / Title */}
-      <div className="mb-10">
+    <aside
+      className={`w-64 min-h-screen bg-slate-900 text-white p-6 flex flex-col
+      ${mobile ? "" : "hidden md:flex"}`}
+    >
+      {/* Header */}
+      <div className="mb-10 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-cyan-400">
           Admin Panel
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Padel Booking System
-        </p>
+
+        {mobile && (
+          <button
+            onClick={onClose}
+            className="text-white text-xl"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
-      {/* Navigation */}
+      {/* Menu */}
       <nav className="flex-1 space-y-2">
         {menu.map((m) => (
           <NavLink
             key={m.path}
             to={m.path}
             end
+            onClick={mobile ? onClose : undefined}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg transition-all
+              `flex items-center gap-3 px-4 py-3 rounded-lg transition
               ${
                 isActive
-                  ? "bg-cyan-400 text-slate-900 font-semibold shadow"
-                  : "text-slate-300 hover:bg-white/10 hover:text-white"
+                  ? "bg-cyan-400 text-slate-900 font-semibold"
+                  : "text-slate-300 hover:bg-white/10"
               }`
             }
           >
             {m.icon}
-            <span>{m.name}</span>
+            {m.name}
           </NavLink>
         ))}
       </nav>
@@ -87,3 +93,5 @@ export default function Sidebar() {
     </aside>
   );
 }
+
+
